@@ -34,18 +34,23 @@ const Inventory = () => {
         if (windowOpened.includes("my-character")) {
             return (
                 <div>
-                    <button onClick={() => equipItem(x, i)}>Equip your item</button>
+                    <button onClick={() =>
+                        equipItem(x, i)}>Equip your item</button>
                 </div>
 
             )
         } else {
             return (
                 <div>
-                    <button onClick={() => sellItem(i)}>Sell your item</button>
+                    <button onClick={() =>
+                        sellItem(i)}>Sell your item</button>
                 </div>
             )
         }
     }
+
+
+
 
     return (
         <div className="d-flex ">
