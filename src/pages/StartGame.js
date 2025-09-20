@@ -1,9 +1,11 @@
-import React from 'react';
-import {useDispatch} from "react-redux";
-import {chooseMyCharacter} from "../features/Character";
-import {useNavigate} from "react-router-dom";
+import React, { useState } from 'react';
+import { useDispatch } from "react-redux";
+import { chooseMyCharacter } from "../features/Character";
+import { useNavigate } from "react-router-dom";
+import './StartGame.css';
 
 const StartGame = () => {
+    const [selectedCharacter, setSelectedCharacter] = useState(null);
 
     const characters = [
         {
@@ -101,46 +103,65 @@ const StartGame = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-
     function Choose(x) {
         dispatch(chooseMyCharacter(x));
-        {navigate("/my-character")}}
+        navigate("/my-character");
+    }
 
     return (
-        <div>
-
-            <div className="j-center d-flex heroBox">
-
-                <div>
-                    <h1>Choose you character</h1>
-                    <div className="d-flex">
-                        {characters.map((x, i) => <div className="grow1" key={i} onClick={() => Choose(x)}>
-                            <img className="img" src={x.image} alt="Character image"/>
-                            <h3>{x.race}</h3>
-                            <div>Damage: {x.damage}</div>
-                            <div>Health: {x.health}</div>
-                            <div>Energy: {x.energy}</div>
-                            <div>Stamina: {x.stamina}</div>
-                            <div>Inventory slots: {x.inventorySlots}</div>
-                            <div>Gold: {x.gold}</div>
-                        </div>)}
-
-                    </div>
-
-                </div>
-
-            </div >
-            <div className="heroBox ">
-                <h1>GAME RULES:</h1>
-                <h4>Select character</h4>
-                <h4>Buy weapons</h4>
-                <h4>Equip weapons</h4>
-                <h4>go to Arena and fight if you lose you will be returned to first page</h4>
-
+        <div className="game-container">
+            <div className="title-section">
+                <h1 className="game-title">ARENA ARENA</h1>
+                <div className="floating-text">Choose Your Champion</div>
             </div>
 
-        </div>
+            <div className="character-selection">
+                <div className="character-grid">
+                    {characters.map((x, i) => (
+                        <div 
+                            className={`character-card ${selectedCharacter === x ? 'selected' : ''}`}
+                            key={i} 
+                            onClick={() => setSelectedCharacter(x)}
+                        >
+                            <div className="character-image-container">
+                                <img className="character-image" src={x.image} alt={x.race} />
+                            </div>
+                            <div className="character-info">
+                                <h3 className="race-title">{x.race}</h3>
+                                <div className="stats">
+                                    <div className="stat-item">⚔️ Damage: {x.damage}</div>
+                                    <div className="stat-item">❤️ Health: {x.health}</div>
+                                    <div className="stat-item">⚡ Energy: {x.energy}</div>
+                                    <div className="stat-item">🏃 Stamina: {x.stamina}</div>
+                                    <div className="stat-item">🎒 Slots: {x.inventorySlots}</div>
+                                    <div className="stat-item">💰 Gold: {x.gold}</div>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
 
+                {selectedCharacter && (
+                    <button 
+                        className="start-button" 
+                        onClick={() => Choose(selectedCharacter)}
+                    >
+                        Start Adventure
+                    </button>
+                )}
+            </div>
+
+            <div className="rules-section">
+                <h2 className="rules-title">Quest Guidelines</h2>
+                <div className="rules-list">
+                    <div className="rule-item">1. Select your champion</div>
+                    <div className="rule-item">2. Visit the merchant to acquire weapons</div>
+                    <div className="rule-item">3. Prepare for battle by equipping your gear</div>
+                    <div className="rule-item">4. Enter the arena and prove your worth</div>
+                    <div className="rule-item">⚠️ Defeat means starting anew!</div>
+                </div>
+            </div>
+        </div>
     );
 };
 
